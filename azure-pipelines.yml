@@ -19,8 +19,8 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     azureSubscription: 'Azure subscription 1(6e8f92a1-933a-4c66-b0b2-78375012c12c)'
-    command: 'build'
-    projects: '**/*.csproj'
+    command: 'publish'
+    publishWebProjects: true
 
 - task: AzureWebApp@1
   inputs:
