@@ -15,6 +15,8 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
+open Microsoft.AspNetCore.Http
+
 
 module Program =
     let exitCode = 0
@@ -41,6 +43,13 @@ module Program =
         app.UseStaticFiles()
         app.UseRouting()
         app.UseAuthorization()
+        app.UseStatusCodePages(fun (context: Diagnostics.StatusCodeContext)  ->
+            let response = context.HttpContext.Response
+            if response.StatusCode = 404 then
+                response.Redirect("/404.html")
+                Task.CompletedTask
+            else
+                Task.CompletedTask)
 
         app.MapControllerRoute(name = "default", pattern = "{controller=Home}/{action=Index}/{id?}")
 
